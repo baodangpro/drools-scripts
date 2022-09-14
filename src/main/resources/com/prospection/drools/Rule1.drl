@@ -1,0 +1,30 @@
+package com.prospection.drools;
+
+import com.prospection.drools.Rule1Config;
+import com.prospection.drools.Rule1Fact;
+
+rule ValidateServer
+when
+  config: Rule1Config()
+  fact: Rule1Fact()
+then
+  if (fact.processors < config.MINIMUM_PROCESSORS) {
+    fact.result.is_passed = false;
+    fact.result.reason = "low processor";
+    return;
+  }
+
+  if (fact.memory <= 1024) {
+    fact.result.is_passed = false;
+    fact.result.reason = "low memory";
+    return;
+  }
+
+  if (fact.disk_space <= 2048) {
+    fact.result.is_passed = false;
+    fact.result.reason = "low disk space";
+    return;
+  }
+
+  fact.result.is_passed = true;
+end
